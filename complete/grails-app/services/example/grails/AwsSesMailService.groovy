@@ -1,5 +1,6 @@
 package example.grails
 
+import com.amazonaws.services.simpleemail.model.SendEmailResult
 import grails.config.Config
 import grails.core.support.GrailsConfigurationAware
 import groovy.transform.CompileStatic
@@ -14,7 +15,7 @@ import com.amazonaws.services.simpleemail.model.SendEmailRequest
 
 @Slf4j
 @CompileStatic
-class AwsSesMailService implements EmailService, GrailsConfigurationAware {
+class AwsSesMailService implements EmailService, GrailsConfigurationAware {  // <1>
 
     String awsRegion
 
@@ -25,12 +26,12 @@ class AwsSesMailService implements EmailService, GrailsConfigurationAware {
     @Override
     void setConfiguration(Config co) {
         this.awsRegion = co.getProperty('aws.ses.region')
-        if (!this.awsRegion && this.awsRegion == '${AWS_REGION}') {
+        if (!this.awsRegion) {
             throw new IllegalStateException('aws.ses.region not set')
         }
 
         this.sourceEmail = co.getProperty('aws.sourceEmail')
-        if (!this.sourceEmail && this.sourceEmail == '${AWS_SOURCE_EMAIL}') {
+        if (!this.sourceEmail) {
             throw new IllegalStateException('aws.sourceEmaill not set')
         }
     }
@@ -83,8 +84,8 @@ class AwsSesMailService implements EmailService, GrailsConfigurationAware {
                     .withRegion(awsRegion)
                     .build()
 
-            client.sendEmail(request)
-            log.info("Email sent!")
+            SendEmailResult sendEmailResult = client.sendEmail(request)
+            log.info("Email sent! {}", sendEmailResult.toString())
 
         } catch (Exception ex) {
             log.warn("The email was not sent.")

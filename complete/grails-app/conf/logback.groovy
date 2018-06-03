@@ -35,4 +35,6 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
 
 }
 root(ERROR, ['STDOUT'])
-logger('example.grails', INFO, ['STDOUT'])
+//tag::logger[]
+logger('example.grails', INFO, ['STDOUT'], false)
+//end::logger[]

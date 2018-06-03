@@ -4,11 +4,12 @@ gettingStarted:
   howto: How to complete the guide
 writingTheApp:
   title: Writing the App
-  dependencies: Add Security Dependencies
   controller: Controller
-  views: Views
-  services: GORM Data Service
+  services:
+    title: GORM Data Service
+    awsSesService: AWS SES
+    sendGridService: SendGrid
+  resources: Resources
   test: Test
-  next: Next Steps
 helpWithGrails:
   title: Do you need help with Grails?

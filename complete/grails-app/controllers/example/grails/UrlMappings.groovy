@@ -10,6 +10,10 @@ class UrlMappings {
         put "/$controller/$id(.$format)?"(action:"update")
         patch "/$controller/$id(.$format)?"(action:"patch")
 
+        //tag::urlmapping[]
+        post "/mail/send"(controller: 'mail', action: 'send')
+        //end::urlmapping[]
+
         "/"(controller: 'application', action:'index')
         "500"(view: '/error')
         "404"(view: '/notFound')

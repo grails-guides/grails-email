@@ -8,7 +8,7 @@ import grails.core.support.GrailsConfigurationAware
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class AwsCredentialsProviderService implements AWSCredentialsProvider, GrailsConfigurationAware {
+class AwsCredentialsProviderService implements AWSCredentialsProvider, GrailsConfigurationAware { // <1>
 
     String accessKey
 
@@ -26,11 +26,11 @@ class AwsCredentialsProviderService implements AWSCredentialsProvider, GrailsCon
 
     @Override
     void setConfiguration(Config co) {
-        this.accessKey = co.getRequiredProperty('aws.accessKeyId', String)
+        this.accessKey = co.getProperty('aws.accessKeyId', String)
         if (!this.accessKey) {
             throw new IllegalStateException('aws.accessKeyId not set')
         }
-        this.secretKey = co.getRequiredProperty('aws.secretKey', String)
+        this.secretKey = co.getProperty('aws.secretKey', String)
         if (!this.secretKey) {
             throw new IllegalStateException('aws.secretKey not set')
         }

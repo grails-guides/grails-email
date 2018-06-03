@@ -6,7 +6,7 @@ import groovy.transform.ToString
 
 @ToString
 @GrailsCompileStatic
-class Email implements Validateable {
+class EmailCmd implements Validateable, Email {
     String recipient
     List<String> cc = []
     List<String> bcc = []
@@ -16,10 +16,10 @@ class Email implements Validateable {
     String replyTo
 
     static constraints = {
-        recipient nullable: false
-        subject nullable: false
+        recipient nullable: false // <1>
+        subject nullable: false  // <2>
         htmlBody nullable: true
-        textBody nullable: true, validator: { String val, Email obj ->
+        textBody nullable: true, validator: { String val, EmailCmd obj ->  // <3>
             !(!obj.htmlBody && !val)
         }
         replyTo nullable: true

@@ -1,7 +1,31 @@
-Create a test which verifies the user authentication flow via Basic Auth.
+In our acceptance test we don't want bean `emailService` to be `SendGridEmailService` or `AwsSesMailService`. Instead we want it to be a Mock which we can verify interactions against.
+
+The `spock-spring` module provides support for defining Spock mocks and stubs as Spring beans.
+
+Add a dependency to `spock-spring`:
 
 [source,groovy]
-.src/integration-test/groovy/example/grails/HomeControllerSpec.groovy
+.build.gradle
 ----
-include::{sourceDir}/src/integration-test/groovy/example/grails/HomeControllerSpec.groovy[]
+include::{sourceDir}/build.gradle[tag=dependencySpockSpring]
 ----
+
+First, you need to annotate `Application.groovy` with `@ComponentScan`.
+
+[source,groovy]
+.grails-app/init/example/grails/Application.groovy
+----
+include::{sourceDir}/grails-app/init/example/grails/Application.groovy[]
+----
+
+In the next test, we use an embedded config annotated with `@TestConfiguration`. We create an `EmailService` mock using a `DetachedMockFactory`.
+
+[source,groovy]
+.src/integration-test/groovy/example/grails/MailControllerSpec.groovy
+----
+include::{sourceDir}/src/integration-test/groovy/example/grails/MailControllerSpec.groovy[]
+----
+
+<1> `emailService.send` method is invoked once.
+
+Learn more about http://spockframework.org/spock/docs/1.1/module_spring.html[Spring Spock integration] in Spock documentation.

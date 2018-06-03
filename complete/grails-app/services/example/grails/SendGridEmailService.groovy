@@ -14,7 +14,7 @@ import groovy.util.logging.Slf4j
 
 @Slf4j
 @CompileStatic
-class SendGridEmailService implements EmailService, GrailsConfigurationAware {
+class SendGridEmailService implements EmailService, GrailsConfigurationAware {  // <1>
 
     String apiKey
 
@@ -22,11 +22,11 @@ class SendGridEmailService implements EmailService, GrailsConfigurationAware {
 
     @Override
     void setConfiguration(Config co) {
-        this.apiKey = co.getRequiredProperty('sendgrid.apiKey', String)
+        this.apiKey = co.getProperty('sendgrid.apiKey', String)
         if (!this.apiKey) {
             throw new IllegalStateException('sendgrid.apiKey not set')
         }
-        this.fromEmail = co.getRequiredProperty('sendgrid.fromEmail', String)
+        this.fromEmail = co.getProperty('sendgrid.fromEmail', String)
         if (!this.fromEmail) {
             throw new IllegalStateException('sendgrid.apiKey not set')
         }

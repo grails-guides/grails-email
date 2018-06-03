@@ -13,18 +13,11 @@ import spock.mock.DetachedMockFactory
 @Integration
 class MailControllerSpec extends Specification {
 
-    @Autowired
-    MailController mailController
-
-    @Qualifier('mockEmailService')
-    @Autowired
     EmailService emailService
 
     def "/mail/send interacts once email service"() {
         given:
         RestBuilder rest = new RestBuilder()
-
-        mailController.emailService = emailService
 
         when:
         RestResponse resp = rest.post("http://localhost:${serverPort}/mail/send") {
@@ -39,7 +32,7 @@ class MailControllerSpec extends Specification {
 
         then:
         resp.status == 200
-        1 * emailService.send(_)
+        1 * emailService.send(_) // <1>
 
     }
 
@@ -47,7 +40,6 @@ class MailControllerSpec extends Specification {
     static class EmailServiceConfiguration {
         private DetachedMockFactory factory = new DetachedMockFactory()
 
-        @Qualifier('mockEmailService')
         @Bean
         EmailService emailService() {
             factory.Mock(EmailService)

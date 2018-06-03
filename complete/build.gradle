@@ -11,7 +11,7 @@ buildscript {
 }
 
 version "0.1"
-group "example"
+group "example.grails"
 
 apply plugin:"eclipse"
 apply plugin:"idea"

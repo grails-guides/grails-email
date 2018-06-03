@@ -106,14 +106,3 @@ environments:
                 testOnReturn: false
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
----
-aws:
-    accessKeyId: '${AWS_ACCESS_KEY_ID}'
-    secretKey: '${AWS_SECRET_KEY}'
-    sourceEmail: '${AWS_SOURCE_EMAIL}'
-    ses:
-        region: '${AWS_REGION}'
----
-sendgrid:
-    apiKey: '${SENDGRID_APIKEY}'
-    fromEmail: '${SENDGRID_FROM_EMAIL}'

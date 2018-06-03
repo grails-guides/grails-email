@@ -58,18 +58,10 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:2.47.1"
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
-    //tag::awsses[]
-    compile 'com.amazonaws:aws-java-sdk-ses:1.11.285'
-    //end::awsses[]
-    //tag::sendgrid[]
-    compile 'com.sendgrid:sendgrid-java:4.1.2'
-    //end::sendgrid[]
-    //tag::dependencyRestClient[]
-    testCompile "org.grails:grails-datastore-rest-client"
-    //end::dependencyRestClient[]
-    //tag::dependencySpockSpring[]
-    testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
-    //end::dependencySpockSpring[]
+
+    //tag::secDependency[]
+    compile 'org.grails.plugins:spring-security-core:3.2.1'
+   //end::secDependency[]
 }
 
 bootRun {
@@ -77,16 +69,6 @@ bootRun {
     addResources = true
     String springProfilesActive = 'spring.profiles.active'
     systemProperty springProfilesActive, System.getProperty(springProfilesActive)
-    //tag::awsprops[]
-    systemProperty "AWS_SOURCE_EMAIL", System.getProperty('AWS_SOURCE_EMAIL')
-    systemProperty "AWS_REGION", System.getProperty('AWS_REGION')
-    systemProperty "AWS_ACCESS_KEY_ID", System.getProperty('AWS_ACCESS_KEY_ID')
-    systemProperty "AWS_SECRET_KEY", System.getProperty('AWS_SECRET_KEY')
-    //end::awsprops[]
-    //tag::sendgridprops[]
-    systemProperty "SENDGRID_APIKEY", System.getProperty('SENDGRID_APIKEY')
-    systemProperty "SENDGRID_FROM_EMAIL", System.getProperty('SENDGRID_FROM_EMAIL')
-    //end::sendgridprops[]
 }
 
 tasks.withType(Test) {

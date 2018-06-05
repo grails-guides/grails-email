@@ -6,7 +6,7 @@ writingTheApp:
   title: Writing the App
   controller: Controller
   services:
-    title: GORM Data Service
+    title: Email Service
     awsSesService: AWS SES
     sendGridService: SendGrid
   resources: Resources

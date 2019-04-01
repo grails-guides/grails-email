@@ -1,2 +1,3 @@
-# grails-oauth-twitter
-How to add Twitter Oauth2 authentication using Spring Security Rest
+# Send Email and Spock Spring
+
+[Guide](https://guides.grails.org/grails-email/guide/index.html)

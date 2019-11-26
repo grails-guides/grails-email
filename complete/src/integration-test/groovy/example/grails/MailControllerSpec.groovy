@@ -2,14 +2,12 @@ package example.grails
 
 import grails.testing.mixin.integration.Integration
 import grails.testing.spock.OnceBefore
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
+import io.micronaut.http.HttpStatus
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import spock.lang.Shared
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
-import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import spock.lang.Specification
 import spock.mock.DetachedMockFactory
@@ -19,7 +17,7 @@ class MailControllerSpec extends Specification {
 
     @Shared
     HttpClient client
-    
+
     EmailService emailService
 
     @OnceBefore
@@ -31,16 +29,15 @@ class MailControllerSpec extends Specification {
     def "/mail/send interacts once email service"() {
         when:
         HttpRequest request = HttpRequest.POST('/mail/send', [
-                subject: 'Test'
-                recipient: 'delamos@grails.example'
+                subject: 'Test',
+                recipient: 'delamos@grails.example',
                 textBody: 'Hola hola'
         ])
-        HttpResponse resp = client.toBlocking.exchange(request)
+        HttpResponse resp = client.toBlocking().exchange(request)
 
         then:
-        resp.status == 200
+        resp.status == HttpStatus.OK
         1 * emailService.send(_) // <1>
-
     }
 
     @TestConfiguration

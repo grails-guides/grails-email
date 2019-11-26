@@ -12,7 +12,7 @@ Add a dependency to AWS SES SDK:
 include::{sourceDir}/build.gradle[tag=awsses]
 ----
 
-Add configuration properties which can be passed via system properties / command line arguments:
+Also, add configuration properties which can be passed via system properties / command line arguments:
 
 [source,groovy]
 .grails-app/conf/application.yml
@@ -20,7 +20,21 @@ Add configuration properties which can be passed via system properties / command
 include::{sourceDir}/grails-app/conf/application.yml[tag=awsses]
 ----
 
-Create one service which encapsulates the integration with SES:
+Create one service which encapsulates the integration with SES. There are several way to provide programmatic credentials.
+
+____
+The client searches for credentials using the default credentials provider chain, in the following order:
+
+In the Java system properties: aws.accessKeyId and aws.secretKey.
+
+In system environment variables: AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
+
+In the default credentials file (the location of this file varies by platform).
+
+In the Amazon ECS environment variable: AWS_CONTAINER_CREDENTIALS_RELATIVE_URI.
+
+In the instance profile credentials, which exist within the instance metadata associated with the IAM role for the EC2 instance.
+____
 
 [source,groovy]
 .grails-app/services/example/grails/AwsSesMailService.groovy

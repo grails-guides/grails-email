@@ -109,15 +109,13 @@ environments:
 ---
 #tag::awsses[]
 aws:
-    accessKeyId: '${AWS_ACCESS_KEY_ID}'
-    secretKey: '${AWS_SECRET_KEY}'
-    sourceEmail: '${AWS_SOURCE_EMAIL}'
     ses:
+        source: '${AWS_SOURCE}'
         region: '${AWS_REGION}'
 #end::awsses[]
 ---
 #tag::sendgrid[]
 sendgrid:
-    apiKey: '${SENDGRID_APIKEY}'
-    fromEmail: '${SENDGRID_FROM_EMAIL}'
+    api: '${SENDGRID_APIKEY}'
+    from: '${SENDGRID_FROM_EMAIL}'
 #end::sendgrid[]

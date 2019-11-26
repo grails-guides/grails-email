@@ -77,7 +77,7 @@ dependencies {
     testCompile "io.micronaut:micronaut-http-client"
 
     //tag::dependencySpockSpring[]
-    testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
+    testCompile 'org.spockframework:spock-spring:1.3-groovy-2.5'
     //end::dependencySpockSpring[]
 }
 
@@ -91,14 +91,20 @@ bootRun {
     String springProfilesActive = 'spring.profiles.active'
     systemProperty springProfilesActive, System.getProperty(springProfilesActive)
     //tag::awsprops[]
-    systemProperty "AWS_SOURCE_EMAIL", System.getProperty('AWS_SOURCE_EMAIL')
-    systemProperty "AWS_REGION", System.getProperty('AWS_REGION')
-    systemProperty "AWS_ACCESS_KEY_ID", System.getProperty('AWS_ACCESS_KEY_ID')
-    systemProperty "AWS_SECRET_KEY", System.getProperty('AWS_SECRET_KEY')
+    if (System.getProperty('AWS_SOURCE')) {
+        systemProperty "AWS_SOURCE", System.getProperty('AWS_SOURCE')
+    }
+    if (System.getProperty('AWS_SOURCE')) {
+        systemProperty "AWS_REGION", System.getProperty('AWS_REGION')
+    }
     //end::awsprops[]
     //tag::sendgridprops[]
-    systemProperty "SENDGRID_APIKEY", System.getProperty('SENDGRID_APIKEY')
-    systemProperty "SENDGRID_FROM_EMAIL", System.getProperty('SENDGRID_FROM_EMAIL')
+    if (System.getProperty('SENDGRID_APIKEY')) {
+        systemProperty "SENDGRID_APIKEY", System.getProperty('SENDGRID_APIKEY')
+    }
+    if (System.getProperty('SENDGRID_FROM_EMAIL')) {
+        systemProperty "SENDGRID_FROM_EMAIL", System.getProperty('SENDGRID_FROM_EMAIL')
+    }
     //end::sendgridprops[]
 }
 

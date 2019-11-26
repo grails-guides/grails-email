@@ -30,9 +30,9 @@ class AwsSesMailService implements EmailService, GrailsConfigurationAware {  // 
         }
         this.sesClient = SesClient.builder().region(Region.of(awsRegion)).build();
 
-        this.sourceEmail = co.getProperty('aws.sourceEmail')
+        this.sourceEmail = co.getProperty('aws.ses.source', '')
         if (!this.sourceEmail) {
-            throw new IllegalStateException('aws.sourceEmaill not set')
+            log.warn('aws.sourceEmail not set')
         }
     }
 

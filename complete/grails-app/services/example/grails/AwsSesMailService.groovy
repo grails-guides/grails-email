@@ -1,34 +1,34 @@
 package example.grails
 
-import com.amazonaws.services.simpleemail.model.SendEmailResult
 import grails.config.Config
 import grails.core.support.GrailsConfigurationAware
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import com.amazonaws.services.simpleemail.AmazonSimpleEmailService
-import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder
-import com.amazonaws.services.simpleemail.model.Body
-import com.amazonaws.services.simpleemail.model.Content
-import com.amazonaws.services.simpleemail.model.Destination
-import com.amazonaws.services.simpleemail.model.Message
-import com.amazonaws.services.simpleemail.model.SendEmailRequest
+import software.amazon.awssdk.regions.Region
+import software.amazon.awssdk.services.ses.SesClient
+import software.amazon.awssdk.services.ses.model.Body
+import software.amazon.awssdk.services.ses.model.Content
+import software.amazon.awssdk.services.ses.model.Destination
+import software.amazon.awssdk.services.ses.model.Message
+import software.amazon.awssdk.services.ses.model.SendEmailRequest
+import software.amazon.awssdk.services.ses.model.SendEmailResponse
 
 @Slf4j
 @CompileStatic
 class AwsSesMailService implements EmailService, GrailsConfigurationAware {  // <1>
 
-    String awsRegion
-
     String sourceEmail
 
-    AwsCredentialsProviderService awsCredentialsProviderService
+    SesClient sesClient
 
     @Override
     void setConfiguration(Config co) {
-        this.awsRegion = co.getProperty('aws.ses.region')
-        if (!this.awsRegion) {
+
+        String awsRegion = co.getProperty('aws.ses.region')
+        if (!awsRegion) {
             throw new IllegalStateException('aws.ses.region not set')
         }
+        this.sesClient = SesClient.builder().region(Region.of(awsRegion)).build();
 
         this.sourceEmail = co.getProperty('aws.sourceEmail')
         if (!this.sourceEmail) {
@@ -38,54 +38,45 @@ class AwsSesMailService implements EmailService, GrailsConfigurationAware {  // 
 
     private Body bodyOfEmail(Email email) {
         if (email.htmlBody) {
-            Content htmlBody = new Content().withData(email.htmlBody)
-            return new Body().withHtml(htmlBody)
+            Content htmlBody = Content.builder().data(email.htmlBody).build()
+            return Body.builder().html(htmlBody).build()
         }
         if (email.textBody) {
-            Content textBody = new Content().withData(email.textBody)
-            return new Body().withHtml(textBody)
+            Content textBody = Content.builder().data(email.textBody).build()
+            return Body.builder().text(textBody).build()
         }
-        new Body()
+        Body.builder().build()
+    }
+
+    private Destination destination(Email email) {
+        Destination.Builder destinationBuilder = Destination.builder().toAddresses(email.recipient)
+        if ( email.getCc() ) {
+            destinationBuilder = destinationBuilder.ccAddresses(email.getCc())
+        }
+        if ( email.getBcc() ) {
+            destinationBuilder = destinationBuilder.bccAddresses(email.getBcc())
+        }
+        destinationBuilder.build()
+    }
+
+    private Message composeMessage(Email email) {
+        Content subject = Content.builder().data(email.getSubject()).build()
+        Body body = bodyOfEmail(email)
+        Message.builder().subject(subject).body(body).build()
     }
 
     @Override
      void send(Email email) {
-
-        if ( !awsCredentialsProviderService ) {
-            log.warn("AWS Credentials provider not configured")
-            return
-        }
-
-        Destination destination = new Destination().withToAddresses(email.recipient)
-        if ( email.getCc() ) {
-            destination = destination.withCcAddresses(email.getCc())
-        }
-        if ( email.getBcc() ) {
-            destination = destination.withBccAddresses(email.getBcc())
-        }
-        Content subject = new Content().withData(email.getSubject())
-        Body body = bodyOfEmail(email)
-        Message message = new Message().withSubject(subject).withBody(body)
-
-        SendEmailRequest request = new SendEmailRequest()
-                .withSource(sourceEmail)
-                .withDestination(destination)
-                .withMessage(message)
-
-        if ( email.getReplyTo() ) {
-            request = request.withReplyToAddresses()
-        }
-
         try {
-            log.info("Attempting to send an email through Amazon SES by using the AWS SDK for Java...")
-
-            AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
-                    .withCredentials(awsCredentialsProviderService)
-                    .withRegion(awsRegion)
+            Destination destination = destination(email)
+            Message message = composeMessage(email)
+            SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
+                    .source(sourceEmail)
+                    .destination(destination)
+                    .message(message)
                     .build()
-
-            SendEmailResult sendEmailResult = client.sendEmail(request)
-            log.info("Email sent! {}", sendEmailResult.toString())
+            SendEmailResponse response = sesClient.sendEmail(sendEmailRequest)
+            log.info("Email sent! {}", response.messageId())
 
         } catch (Exception ex) {
             log.warn("The email was not sent.")

@@ -20,15 +20,7 @@ Add configuration properties which can be passed via system properties / command
 include::{sourceDir}/grails-app/conf/application.yml[tag=awsses]
 ----
 
-Create two services which encapsulate the integration with SES:
-
-[source,groovy]
-.grails-app/services/example/grails/AwsCredentialsProviderService.groovy
-----
-include::{sourceDir}/grails-app/services/example/grails/AwsCredentialsProviderService.groovy[]
-----
-
-<1> http://grailsblog.objectcomputing.com/posts/2016/08/31/retrieving-config-values.html[Retrieve configuration values] with `GrailsConfigurationAware`
+Create one service which encapsulates the integration with SES:
 
 [source,groovy]
 .grails-app/services/example/grails/AwsSesMailService.groovy

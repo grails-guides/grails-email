@@ -60,7 +60,7 @@ dependencies {
     testCompile "org.grails.plugins:geb:1.1.2"
     testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:2.47.1"
     testCompile "org.seleniumhq.selenium:htmlunit-driver:2.35.1"
-    testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
+    testRuntime 'net.sourceforge.htmlunit:htmlunit:2.35.0'
     //tag::awsses[]
     compile 'com.amazonaws:aws-java-sdk-ses:1.11.285'
     //end::awsses[]

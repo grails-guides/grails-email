@@ -74,6 +74,8 @@ dependencies {
     compile 'com.sendgrid:sendgrid-java:4.1.2'
     //end::sendgrid[]
 
+    testCompile "io.micronaut:micronaut-http-client"
+
     //tag::dependencySpockSpring[]
     testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
     //end::dependencySpockSpring[]

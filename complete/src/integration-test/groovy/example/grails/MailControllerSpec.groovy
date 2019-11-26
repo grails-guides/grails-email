@@ -1,34 +1,41 @@
 package example.grails
 
-import grails.plugins.rest.client.RestBuilder
-import grails.plugins.rest.client.RestResponse
 import grails.testing.mixin.integration.Integration
+import grails.testing.spock.OnceBefore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import spock.lang.Shared
+import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
+import io.micronaut.http.client.HttpClient
 import spock.lang.Specification
 import spock.mock.DetachedMockFactory
 
 @Integration
 class MailControllerSpec extends Specification {
 
+    @Shared
+    HttpClient client
+    
     EmailService emailService
 
-    def "/mail/send interacts once email service"() {
-        given:
-        RestBuilder rest = new RestBuilder()
+    @OnceBefore
+    void init() {
+        String baseUrl = "http://localhost:$serverPort"
+        this.client  = HttpClient.create(baseUrl.toURL())
+    }
 
+    def "/mail/send interacts once email service"() {
         when:
-        RestResponse resp = rest.post("http://localhost:${serverPort}/mail/send") {
-            accept('application/json')
-            contentType('application/json')
-            json {
-                subject = 'Test'
-                recipient = 'delamos@grails.example'
-                textBody  = 'Hola hola'
-            }
-        }
+        HttpRequest request = HttpRequest.POST('/mail/send', [
+                subject: 'Test'
+                recipient: 'delamos@grails.example'
+                textBody: 'Hola hola'
+        ])
+        HttpResponse resp = client.toBlocking.exchange(request)
 
         then:
         resp.status == 200

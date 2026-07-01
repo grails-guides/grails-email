@@ -1,6 +1,8 @@
-response.status 500
+model {
+    Throwable exception
+}
 
-json {    
-    message "Internal server error"
-    error 500
+json {
+    message exception?.message ?: 'An error occurred'
+    error exception?.class?.simpleName
 }

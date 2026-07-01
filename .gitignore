@@ -1,6 +1,7 @@
-**/node_modules
-**/.gradle
-.idea
+node_modules/
+.gradle/
+build/
+.idea/
 *.iml
-**/build
 .DS_Store
+Thumbs.db

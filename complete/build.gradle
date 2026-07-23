@@ -125,6 +125,12 @@ dependencies {
     integrationTestImplementation "org.spockframework:spock-spring"
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 compileJava.options.release = 21
 
 tasks.withType(Test).configureEach {

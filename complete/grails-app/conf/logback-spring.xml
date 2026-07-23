@@ -7,7 +7,7 @@
     </root>
     <logger name="example" level="DEBUG"/>
     <!--tag::logger-->
-    <logger name="example.AwsSesMailService" level="DEBUG"/>
+    <logger name="example.AwsSesEmailService" level="DEBUG"/>
     <logger name="example.SendGridEmailService" level="DEBUG"/>
   <!--end::logger-->
 </configuration>

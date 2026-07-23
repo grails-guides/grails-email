@@ -3,6 +3,6 @@ model {
 }
 
 json {
-    message exception?.message ?: 'An error occurred'
-    error exception?.class?.simpleName
+    message 'Internal server error'
+    status 500
 }

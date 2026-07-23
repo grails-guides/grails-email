@@ -107,6 +107,12 @@ dependencies {
     testImplementation "org.spockframework:spock-core"
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 compileJava.options.release = 21
 
 tasks.withType(Test).configureEach {

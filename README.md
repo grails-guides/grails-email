@@ -85,8 +85,9 @@ beans = {
     def provider = application.config.getProperty('email.provider', String, 'smtp')
     switch (provider) {
         case 'sendgrid': emailService(SendGridEmailService); break
-        case 'ses':      emailService(AwsSesMailService); break
-        default:         emailService(SmtpEmailService)
+        case 'ses':      emailService(AwsSesEmailService); break
+        case 'smtp':     emailService(SmtpEmailService); break
+        default:         throw new IllegalArgumentException("Unsupported email.provider: ${provider}")
     }
 }
 ```

@@ -15,6 +15,7 @@ class MailController {
 
     def send(EmailCmd cmd) {
         if (cmd.hasErrors()) {
+            request.setAttribute('originalRequestURI', request.requestURI)
             respond cmd.errors, view: '/application/errors', status: UNPROCESSABLE_ENTITY
             return
         }

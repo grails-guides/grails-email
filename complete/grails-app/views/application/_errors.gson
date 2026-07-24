@@ -13,8 +13,8 @@ json {
     Errors errorsObject = (Errors)this.errors
     def allErrors = errorsObject.allErrors
     int errorCount = allErrors.size()
-    def resourcePath = request.uri
-    def resourceLink = g.link(uri: request.uri, absolute: true)
+    def resourcePath = request.requestURI
+    def resourceLink = g.link(uri: request.requestURI, absolute: true)
     if(errorCount == 1) {
         def error = allErrors.iterator().next()
         message messageSource.getMessage(error, locale)

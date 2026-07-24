@@ -43,6 +43,7 @@ plugins {
 
 apply plugin: "org.apache.grails.gradle.grails-web"
 apply plugin: "org.apache.grails.gradle.grails-gson"
+apply plugin: "org.apache.grails.gradle.grails-gsp"
 
 group = "example"
 
@@ -94,6 +95,7 @@ dependencies {
     implementation "org.apache.grails:grails-url-mappings"
     implementation "org.apache.grails:grails-views-gson"
     implementation "org.apache.grails:grails-web-boot"
+    implementation "org.apache.grails:grails-gsp"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework.boot:spring-boot-starter"
     implementation "org.springframework.boot:spring-boot-starter-actuator"

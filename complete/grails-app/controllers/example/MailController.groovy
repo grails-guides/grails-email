@@ -18,7 +18,7 @@ class MailController {
             respond cmd.errors, view: '/application/errors', status: UNPROCESSABLE_ENTITY
             return
         }
-        log.info 'Sending mail to {} with subject {}', cmd.recipient, cmd.subject
+        log.info 'Sending mail'
         emailService.send(cmd)
         render status: 200
     }

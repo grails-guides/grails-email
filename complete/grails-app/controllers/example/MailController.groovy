@@ -15,7 +15,7 @@ class MailController {
 
     def send(EmailCmd cmd) {
         if (cmd.hasErrors()) {
-            respond cmd.errors, view: '/application/errors', status: UNPROCESSABLE_ENTITY
+            respond cmd.errors, status: UNPROCESSABLE_ENTITY
             return
         }
         log.info 'Sending mail'

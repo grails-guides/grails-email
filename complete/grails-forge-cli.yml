@@ -1,0 +1,5 @@
+# grails create-app example --profile=rest-api --inplace -f views-json,spock
+applicationType: rest-api
+defaultPackage: example
+name: example
+grailsVersion: 8.0.0-SNAPSHOT

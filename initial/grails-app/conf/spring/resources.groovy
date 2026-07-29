@@ -1,5 +1,1 @@
-import example.grails.UserPasswordEncoderListener
-// Place your Spring DSL code here
-beans = {
-    userPasswordEncoderListener(UserPasswordEncoderListener)
-}
+// Place your Spring bean DSL code here

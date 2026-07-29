@@ -1,10 +1,26 @@
-import example.grails.AwsSesMailService
-import example.grails.SendGridEmailService
+import example.AwsSesEmailService
+import example.SendGridEmailService
+import example.SmtpEmailService
+import grails.util.Environment
 
 beans = {
-    if ( System.getProperty('SENDGRID_FROM_EMAIL') && System.getProperty('SENDGRID_APIKEY') ) {
-        emailService(SendGridEmailService)
-    } else if (System.getProperty('AWS_REGION') && System.getProperty('AWS_SOURCE')) {
-        emailService(AwsSesMailService)
+    if (Environment.current == Environment.TEST) {
+        return
     }
+    //tag::emailServiceBeans[]
+    def provider = application.config.getProperty('email.provider', String, 'smtp')
+    switch (provider) {
+        case 'sendgrid':
+            emailService(SendGridEmailService)
+            break
+        case 'ses':
+            emailService(AwsSesEmailService)
+            break
+        case 'smtp':
+            emailService(SmtpEmailService)
+            break
+        default:
+            throw new IllegalArgumentException("Unsupported email.provider: ${provider}")
+    }
+    //end::emailServiceBeans[]
 }
